@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Свадьба</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:   #FAF6EF;
+    --cream2:  #F0E9DF;
+    --choco:   #3D2B1F;
+    --taupe:   #6B5444;
+    --terra:   #B8694A;
+    --beige:   #C9B896;
+    --pbeige:  #DDC9B4;
+    --drose:   #C9A79C;
+    --blush:   #D7B9B0;
+    --sage:    #A8B89A;
+    --olive:   #5B6B47;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--cream);
+    background-image:
+      radial-gradient(circle, #00000006 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: var(--choco);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.8;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ─── SIDE VINES (decorative, adapts to mobile) ──── */
+  .side-vine {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .side-vine.left  { left: 0; }
+  .side-vine.right { right: 0; transform: scaleX(-1); }
+  .side-vine svg { width: 100%; height: 100%; }
+
+  @media (max-width: 1100px) {
+    .side-vine { width: 36px; opacity: 0.4; }
+  }
+  @media (max-width: 560px) {
+    .side-vine { width: 16px; opacity: 0.32; }
+  }
+
+  /* ─── SCROLL REVEAL ───────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── HERO ─────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 24px;
+    position: relative;
+    background: var(--cream);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 60%, #e8dfd0 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-eyebrow, .hero-names, .hero-date, .leaf-divider, .hero-scroll {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 28px;
+  }
+
+  .hero-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(56px, 10vw, 110px);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    color: var(--choco);
+    margin-bottom: 28px;
+  }
+
+  .hero-names em {
+    font-style: italic;
+    color: var(--taupe);
+  }
+
+  .hero-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 18px;
+    letter-spacing: 0.22em;
+    color: var(--choco);
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .leaf-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--sage);
+    margin: 0 auto;
+  }
+  .leaf-divider line-rule {
+    display: block;
+    width: 60px;
+    height: 1px;
+    background: var(--beige);
+  }
+
+  /* SVG leaf */
+  .leaf-svg { width: 40px; opacity: 0.85; }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--beige);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 32px;
+    background: var(--beige);
+    animation: scrollline 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollline {
+    0%,100% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ─── SECTION BASE ──────────────────────────────── */
+  section {
+    padding: 56px 24px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+  }
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    width: 16px;
+    height: 1px;
+    background: var(--sage);
+    opacity: 0.7;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(32px, 5vw, 46px);
+    line-height: 1.2;
+    margin-bottom: 36px;
+    color: var(--choco);
+  }
+
+  /* ─── DIVIDER ───────────────────────────────────── */
+  .divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 0;
+    padding: 0 24px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .divider hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--pbeige);
+  }
+
+  /* ─── TIMER ─────────────────────────────────────── */
+  .timer-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .timer-unit {
+    text-align: center;
+    padding: 0 28px;
+    position: relative;
+  }
+  .timer-unit + .timer-unit::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-60%);
+    height: 50px;
+    width: 1px;
+    background: var(--pbeige);
+  }
+
+  .timer-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 8vw, 76px);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--choco);
+    display: block;
+    min-width: 2ch;
+  }
+
+  .timer-label {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--taupe);
+    display: block;
+    margin-top: 8px;
+    font-weight: 500;
+  }
+
+  /* ─── PHOTOS ────────────────────────────────────── */
+  .photos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .photo-slot {
+    background: var(--cream2);
+    aspect-ratio: 3/4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--beige);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid var(--pbeige);
+    box-shadow: 0 18px 40px -12px rgba(61,43,31,0.18);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .photo-slot img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; /* show when real photo added */
+  }
+
+  .photo-slot svg { opacity: 0.4; }
+
+  /* ─── PROGRAM ────────────────────────────────────── */
+  .program-list {
+    list-style: none;
+    border-left: 1px solid var(--pbeige);
+    padding-left: 0;
+    margin-left: 24px;
+  }
+
+  .program-item {
+    display: flex;
+    gap: 32px;
+    padding: 0 0 48px 40px;
+    position: relative;
+  }
+  .program-item:last-child { padding-bottom: 0; }
+
+  .program-item::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--sage);
+    border: 2px solid var(--cream);
+    box-shadow: 0 0 0 1px var(--sage);
+  }
+
+  .program-time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--terra);
+    white-space: nowrap;
+    line-height: 1.2;
+    min-width: 80px;
+  }
+
+  .program-info {}
+  .program-event {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--choco);
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+  .program-desc {
+    font-size: 12px;
+    color: var(--choco);
+    line-height: 1.7;
+  }
+
+  /* ─── DRESS CODE ─────────────────────────────────── */
+  .palette-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .palette-dot {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+  }
+
+  .dresscode-text {
+    font-size: 13px;
+    color: var(--choco);
+    line-height: 1.9;
+    max-width: 420px;
+  }
+
+  /* ─── MAP ────────────────────────────────────────── */
+  .map-wrap {
+    width: 100%;
+    height: 340px;
+    background: var(--cream2);
+    border: 1px solid var(--pbeige);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .map-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    filter: saturate(0.5) sepia(0.18);
+  }
+
+  .location-info {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .location-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .location-detail span:first-child {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--olive);
+    font-weight: 500;
+  }
+  .location-detail span:last-child {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--choco);
+  }
+
+  /* ─── FOOTER ─────────────────────────────────────── */
+  footer {
+    background: var(--choco);
+    color: var(--pbeige);
+    text-align: center;
+    padding: 56px 24px;
+  }
+  footer .f-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+    color: #F0E4D4;
+  }
+  footer p {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #C9B896;
+    font-weight: 500;
+  }
+
+  @media (max-width: 560px) {
+    .photos-grid { grid-template-columns: 1fr; }
+    .timer-unit { padding: 0 16px; }
+    .program-item { gap: 20px; }
+    .program-time { min-width: 60px; font-size: 22px; }
+    #invite-block .photo-slot {
+      flex: 0 0 auto !important;
+      width: 100% !important;
+      height: 300px !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ DECORATIVE SIDE VINES ══════════════════════════ -->
+<div class="side-vine left">
+  <svg viewBox="0 0 70 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5,0 C30,80 -10,160 15,240 C35,310 0,380 20,460 C38,530 5,600 18,680 C30,740 5,780 12,800"
+          stroke="#A8B89A" stroke-width="1.4" fill="none" opacity="0.7"/>
+    <g fill="#A8B89A" opacity="0.55">
+      <ellipse cx="18" cy="90"  rx="9" ry="4" transform="rotate(35 18 90)"/>
+      <ellipse cx="6"  cy="200" rx="9" ry="4" transform="rotate(-30 6 200)"/>
+      <ellipse cx="28" cy="320" rx="9" ry="4" transform="rotate(40 28 320)"/>
+      <ellipse cx="4"  cy="430" rx="9" ry="4" transform="rotate(-35 4 430)"/>
+      <ellipse cx="26" cy="540" rx="9" ry="4" transform="rotate(30 26 540)"/>
+      <ellipse cx="10" cy="660" rx="9" ry="4" transform="rotate(-25 10 660)"/>
+    </g>
+    <g fill="#5B6B47" opacity="0.5">
+      <circle cx="15" cy="150" r="3"/>
+      <circle cx="22" cy="380" r="3"/>
+      <circle cx="14" cy="590" r="3"/>
+    </g>
+  </svg>
+</div>
+<div class="side-vine right">
+  <svg viewBox="0 0 70 800" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5,0 C30,80 -10,160 15,240 C35,310 0,380 20,460 C38,530 5,600 18,680 C30,740 5,780 12,800"
+          stroke="#A8B89A" stroke-width="1.4" fill="none" opacity="0.7"/>
+    <g fill="#A8B89A" opacity="0.55">
+      <ellipse cx="18" cy="90"  rx="9" ry="4" transform="rotate(35 18 90)"/>
+      <ellipse cx="6"  cy="200" rx="9" ry="4" transform="rotate(-30 6 200)"/>
+      <ellipse cx="28" cy="320" rx="9" ry="4" transform="rotate(40 28 320)"/>
+      <ellipse cx="4"  cy="430" rx="9" ry="4" transform="rotate(-35 4 430)"/>
+      <ellipse cx="26" cy="540" rx="9" ry="4" transform="rotate(30 26 540)"/>
+      <ellipse cx="10" cy="660" rx="9" ry="4" transform="rotate(-25 10 660)"/>
+    </g>
+    <g fill="#5B6B47" opacity="0.5">
+      <circle cx="15" cy="150" r="3"/>
+      <circle cx="22" cy="380" r="3"/>
+      <circle cx="14" cy="590" r="3"/>
+    </g>
+  </svg>
+</div>
+
+<!-- ══ ПЕРСОНАЛЬНОЕ ПРИГЛАШЕНИЕ + ФОТО ═══════════════ -->
+<div style="
+  max-width: 620px;
+  margin: 80px auto 0;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+">
+  <div id="invite-content" style="flex: 1; min-width: 260px; text-align: center;">
+  <p style="
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--choco);
+    margin: 0 0 24px;
+    line-height: 1.4;
+  ">Дорогая бабушка Галя,</p>
+  <p style="
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(13px, 2vw, 15px);
+    font-weight: 400;
+    color: var(--taupe);
+    line-height: 2;
+    max-width: 480px;
+    margin: 0 auto 36px;
+  ">Нам очень важно, чтобы ты была рядом в этот день. Твоя любовь и тепло значат для нас очень много. Будем очень рады видеть тебя на нашей свадьбе — 18 сентября 2026, пятница.</p>
+  <svg viewBox="0 0 200 20" style="display:block;margin:0 auto;" width="160">
+    <line x1="0" y1="10" x2="200" y2="10" stroke="#DDC9B4" stroke-width="1"/>
+    <ellipse cx="92" cy="7" rx="7" ry="2.6" fill="#A8B89A" transform="rotate(-28 92 7)"/>
+    <ellipse cx="108" cy="7" rx="7" ry="2.6" fill="#A8B89A" transform="rotate(28 108 7)"/>
+    <circle cx="100" cy="10" r="3" fill="#5B6B47"/>
+  </svg>
+  </div>
+
+  <div class="photo-slot" style="flex: 1 1 100%; height: 260px; max-width: 100%;">
+    <img src="photo.jpg" style="display:block; width:100%; height:100%; object-fit:cover; object-position:30% center;">
+  </div>
+</div>
+
+<!-- ══ TIMER ══════════════════════════════════════════ -->
+<section class="reveal" style="text-align:center;">
+  <span class="section-label">До торжества осталось</span>
+  <div class="timer-wrap">
+    <div class="timer-unit">
+      <span class="timer-num" id="t-days">00</span>
+      <span class="timer-label">дней</span>
+    </div>
+    <div class="timer-unit">
+      <span class="timer-num" id="t-hours">00</span>
+      <span class="timer-label">часов</span>
+    </div>
+    <div class="timer-unit">
+      <span class="timer-num" id="t-min">00</span>
+      <span class="timer-label">минут</span>
+    </div>
+    <div class="timer-unit">
+      <span class="timer-num" id="t-sec">00</span>
+      <span class="timer-label">секунд</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROGRAM ══════════════════════════════════════════ -->
+<div class="divider"><hr><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="8" rx="5" ry="8" fill="#A8B89A" opacity="0.5" transform="rotate(-18 14 8)"/><ellipse cx="14" cy="8" rx="5" ry="8" fill="#5B6B47" opacity="0.4" transform="rotate(18 14 8)"/><circle cx="14" cy="20" r="2.5" fill="#6B5444"/></svg><hr></div>
+
+<section class="reveal">
+  <div style="text-align:center;">
+    <span class="section-label">Программа дня</span>
+    <h2 class="section-title">Как пройдёт<br>наш день</h2>
+  </div>
+
+  <ul class="program-list">
+    <li class="program-item">
+      <span class="program-time">13:00</span>
+      <div class="program-info">
+        <div class="program-event">Регистрация</div>
+        <div class="program-desc">Официальная церемония бракосочетания.<br>Просим прибыть за 15 минут.<br>
+          <span style="color:var(--olive);font-size:11px;letter-spacing:0.05em;">Дворец бракосочетания · ул. Ленина, 52</span>
+        </div>
+      </div>
+    </li>
+    <li class="program-item">
+      <span class="program-time">14:00</span>
+      <div class="program-info">
+        <div class="program-event">Венчание</div>
+        <div class="program-desc">Церковная церемония венчания.<br>
+          <span style="color:var(--olive);font-size:11px;letter-spacing:0.05em;">Храм Вознесения Господня · Производственная ул., 6</span>
+        </div>
+      </div>
+    </li>
+    <li class="program-item">
+      <span class="program-time">16:00</span>
+      <div class="program-info">
+        <div class="program-event">Банкет</div>
+        <div class="program-desc">Праздничный ужин, тосты и танцы до поздней ночи.<br>
+          <span style="color:var(--olive);font-size:11px;letter-spacing:0.05em;">Ресторан Тэнгис · ул. Ербанова, 12</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- ══ DRESS CODE ══════════════════════════════════════ -->
+<div class="divider"><hr><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="8" rx="5" ry="8" fill="#A8B89A" opacity="0.5" transform="rotate(-18 14 8)"/><ellipse cx="14" cy="8" rx="5" ry="8" fill="#5B6B47" opacity="0.4" transform="rotate(18 14 8)"/><circle cx="14" cy="20" r="2.5" fill="#6B5444"/></svg><hr></div>
+
+<section class="reveal" style="text-align:center;">
+  <span class="section-label">Дресс-код</span>
+  <h2 class="section-title">Цветовая гамма<br>праздника</h2>
+  <p class="dresscode-text" style="margin-left:auto;margin-right:auto;">
+    Мы будем очень рады, если вы поддержите палитру торжества.<br>
+    Пожалуйста, избегайте белого и чёрного цветов.
+  </p>
+  <svg viewBox="0 0 680 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;margin:36px auto 0;display:block;">
+    <rect width="680" height="120" rx="4" fill="#FAF6EF"/>
+    <!-- circles (brown, terra, burgundy, warm gray, beige, light beige, blush) -->
+    <circle cx="112" cy="60" r="34" fill="#6B4226"/>
+    <circle cx="188" cy="60" r="34" fill="#B8694A"/>
+    <circle cx="264" cy="60" r="34" fill="#7A3B42"/>
+    <circle cx="340" cy="60" r="34" fill="#9C958A"/>
+    <circle cx="416" cy="60" r="34" fill="#C9B896"/>
+    <circle cx="492" cy="60" r="34" fill="#DDC9B4"/>
+    <circle cx="568" cy="60" r="34" fill="#D7B9B0"/>
+  </svg>
+</section>
+
+<!-- ══ LOCATION ══════════════════════════════════════════ -->
+<div class="divider"><hr><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="8" rx="5" ry="8" fill="#A8B89A" opacity="0.5" transform="rotate(-18 14 8)"/><ellipse cx="14" cy="8" rx="5" ry="8" fill="#5B6B47" opacity="0.4" transform="rotate(18 14 8)"/><circle cx="14" cy="20" r="2.5" fill="#6B5444"/></svg><hr></div>
+
+<section class="reveal">
+  <div style="text-align:center;">
+    <span class="section-label">Место проведения</span>
+    <h2 class="section-title">Как добраться<br>до места</h2>
+  </div>
+
+  <div class="location-info">
+    <div class="location-detail">
+      <span>Ресторан</span>
+      <span>Тэнгис</span>
+    </div>
+    <div class="location-detail">
+      <span>Адрес</span>
+      <span>ул. Ербанова, 12, Улан-Удэ</span>
+    </div>
+    <div class="location-detail">
+      <span>Дата</span>
+      <span>18 сентября 2026</span>
+    </div>
+  </div>
+
+  <div class="map-wrap">
+    <!-- Замените src на вашу Google Maps embed ссылку -->
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2465.5148579990773!2d107.58359707689448!3d51.8332922868434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5dafdb30c734b7bb%3A0xec32ef54ae08a30d!2z0KDQtdGB0YLQvtGA0LDQvSDQotGN0L3Qs9C40YEgKNCT0LDRgdGC0YDQvtC90L7QvNC40YfQtdGB0LrQsNGPINC60LDRgNGC0LAg0KDQvtGB0YHQuNC4KQ!5e0!3m2!1sru!2sfi!4v1782203053335!5m2!1sru!2sfi"
+      allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════ -->
+<footer>
+  <div class="f-names">Иван &amp; Инна</div>
+  <p>С любовью ждём вас · 18 · 09 · 2026</p>
+</footer>
+
+<script>
+  // ── Персональные приглашения ─────────────────────
+  const date = '18 сентября 2026, пятница';
+
+  const guests = {
+    '1': {
+      greeting: 'Дорогие мама и папа,',
+      text: `Вы первые, кого мы хотим видеть в этот день. Без вас этот праздник был бы не тем — ждём вас на нашей свадьбе 18 сентября 2026, пятница.`
+    },
+    '2': {
+      greeting: 'Дорогая бабушка Галя,',
+      text: `Нам очень важно, чтобы ты была рядом в этот день. Твоя любовь и тепло значат для нас очень много. Будем очень рады видеть тебя на нашей свадьбе — ${date}.`
+    },
+    '3': {
+      greeting: 'Дорогие Настя и Костя,',
+      text: `Без близких людей рядом этот день был бы не тем. Мы будем очень рады, если вы разделите с нами этот особенный день. Ждём вас на нашей свадьбе — ${date}.`
+    },
+    '4': {
+      greeting: 'Дорогая Сонечка,',
+      text: `Без близких людей рядом этот день был бы не тем. Мы будем очень рады, если ты разделишь с нами этот особенный день. Ждём тебя на нашей свадьбе — ${date}.`
+    },
+    '5': {
+      greeting: 'Дорогие Паша и Аня,',
+      text: `Без близких людей рядом этот день был бы не тем. Мы будем очень рады, если вы разделите с нами этот особенный день. Ждём вас на нашей свадьбе — ${date}.`
+    },
+    '6': {
+      greeting: 'Дорогая тётя Вероника,',
+      text: `Этот день для нас особенный, и мы хотим провести его в кругу самых близких. Будем очень рады видеть тебя на нашей свадьбе — ${date}.`
+    },
+    '7': {
+      greeting: 'Дорогие дядя Сергей и тётя Марина,',
+      text: `Этот день для нас особенный, и мы хотим провести его в кругу самых близких. Будем очень рады видеть вас на нашей свадьбе — ${date}.`
+    },
+    '8': {
+      greeting: 'Дорогие Николай и Екатерина,',
+      text: `Этот день для нас особенный, и мы хотим провести его в кругу самых близких. Будем очень рады видеть вас на нашей свадьбе — ${date}.`
+    },
+    '9': {
+      greeting: 'Дорогие Евгений и Светлана,',
+      text: `Этот день для нас особенный, и мы хотим провести его в кругу самых близких. Будем очень рады видеть вас на нашей свадьбе — ${date}.`
+    },
+    '10': {
+      greeting: 'Дорогие Роман и Ася,',
+      text: `Этот день для нас особенный, и мы хотим провести его в кругу самых близких. Будем очень рады видеть вас на нашей свадьбе — ${date}.`
+    },
+    '11': {
+      greeting: 'Дорогие дядя Олег и тётя Светлана,',
+      text: `Этот день для нас особенный, и мы хотим провести его в кругу самых близких. Будем очень рады видеть вас на нашей свадьбе — ${date}.`
+    },
+  };
+
+  /*
+  /*
+  const params = new URLSearchParams(window.location.search);
+  const gid = params.get('g');
+  const guest = guests[gid];
+  const container = document.getElementById('invite-content');
+
+  if (guest) {
+    container.innerHTML = `
+      <p style="
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(22px, 4vw, 32px);
+        font-weight: 400;
+        font-style: italic;
+        color: var(--choco);
+        margin: 0 0 24px;
+        line-height: 1.4;
+      ">${guest.greeting}</p>
+      <p style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(13px, 2vw, 15px);
+        font-weight: 400;
+        color: var(--taupe);
+        line-height: 2;
+        max-width: 480px;
+        margin: 0 auto 36px;
+      ">${guest.text}</p>
+      <svg viewBox="0 0 200 20" style="display:block;margin:0 auto;" width="160">
+        <line x1="0" y1="10" x2="200" y2="10" stroke="#DDC9B4" stroke-width="1"/>
+        <ellipse cx="92" cy="7" rx="7" ry="2.6" fill="#A8B89A" transform="rotate(-28 92 7)"/>
+        <ellipse cx="108" cy="7" rx="7" ry="2.6" fill="#A8B89A" transform="rotate(28 108 7)"/>
+        <circle cx="100" cy="10" r="3" fill="#5B6B47"/>
+      </svg>
+    `;
+  } else {
+    container.innerHTML = `
+      <p style="
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(22px, 4vw, 32px);
+        font-weight: 400;
+        font-style: italic;
+        color: var(--choco);
+        margin: 0 0 24px;
+        line-height: 1.4;
+      ">Дорогой гость,</p>
+      <p style="
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(13px, 2vw, 15px);
+        font-weight: 400;
+        color: var(--taupe);
+        line-height: 2;
+        max-width: 480px;
+        margin: 0 auto 36px;
+      ">Свадьба — это не просто праздник, это начало новой жизни для нас. Мы хотим провести этот день в окружении людей, которые нам дороги, и будем рады видеть вас рядом — 18 сентября 2026, пятница.</p>
+      <svg viewBox="0 0 200 20" style="display:block;margin:0 auto;" width="160">
+        <line x1="0" y1="10" x2="200" y2="10" stroke="#DDC9B4" stroke-width="1"/>
+        <ellipse cx="92" cy="7" rx="7" ry="2.6" fill="#A8B89A" transform="rotate(-28 92 7)"/>
+        <ellipse cx="108" cy="7" rx="7" ry="2.6" fill="#A8B89A" transform="rotate(28 108 7)"/>
+        <circle cx="100" cy="10" r="3" fill="#5B6B47"/>
+      </svg>
+    `;
+  }
+  */
+
+  // ── Countdown timer ──────────────────────────────
+  const wedding = new Date('2026-09-18T13:00:00');
+
+  function pad(n) { return String(n).padStart(2,'0'); }
+
+  function tick() {
+    const now = new Date();
+    const diff = wedding - now;
+    if (diff <= 0) {
+      document.getElementById('t-days').textContent  = '00';
+      document.getElementById('t-hours').textContent = '00';
+      document.getElementById('t-min').textContent   = '00';
+      document.getElementById('t-sec').textContent   = '00';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('t-days').textContent  = pad(d);
+    document.getElementById('t-hours').textContent = pad(h);
+    document.getElementById('t-min').textContent   = pad(m);
+    document.getElementById('t-sec').textContent   = pad(s);
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  // ── Scroll reveal ──────────────────────────────
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
