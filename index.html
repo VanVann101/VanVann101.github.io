@@ -630,6 +630,74 @@
   </div>
 </section>
 
+<!-- ══ RSVP ══════════════════════════════════════════ -->
+<div class="divider"><hr><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="8" rx="5" ry="8" fill="#A8B89A" opacity="0.5" transform="rotate(-18 14 8)"/><ellipse cx="14" cy="8" rx="5" ry="8" fill="#5B6B47" opacity="0.4" transform="rotate(18 14 8)"/><circle cx="14" cy="20" r="2.5" fill="#6B5444"/></svg><hr></div>
+
+<section class="reveal" style="text-align:center;">
+  <span class="section-label">Подтверждение</span>
+  <h2 class="section-title">Вы придёте?</h2>
+  <p class="dresscode-text" style="margin:0 auto 40px;">Пожалуйста, заполните форму до 1 сентября 2026</p>
+
+  <div id="rsvp-form" style="max-width:480px;margin:0 auto;text-align:left;">
+
+    <!-- ФИО (скрывается если есть ?g= параметр) -->
+    <div id="rsvp-name-block" style="margin-bottom:20px;">
+      <label style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);font-weight:500;display:block;margin-bottom:8px;">Ваше имя</label>
+      <input id="rsvp-name" type="text" placeholder="Как вас зовут"
+        style="width:100%;padding:14px 16px;border:1px solid var(--pbeige);background:var(--cream);font-family:'Montserrat',sans-serif;font-size:13px;color:var(--choco);outline:none;box-sizing:border-box;">
+    </div>
+
+    <!-- Придут -->
+    <div style="margin-bottom:20px;">
+      <label style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);font-weight:500;display:block;margin-bottom:12px;">Вы придёте?</label>
+      <div style="display:flex;gap:12px;">
+        <label style="flex:1;cursor:pointer;">
+          <input type="radio" name="attending" value="Да, приду" style="display:none;" onchange="document.querySelectorAll('.rsvp-btn').forEach(b=>b.style.background='var(--cream)');this.parentElement.querySelector('.rsvp-btn').style.background='var(--sage)'">
+          <div class="rsvp-btn" style="text-align:center;padding:12px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.1em;background:var(--cream);color:var(--choco);transition:background 0.2s;">Да, приду</div>
+        </label>
+        <label style="flex:1;cursor:pointer;">
+          <input type="radio" name="attending" value="К сожалению, нет" style="display:none;" onchange="document.querySelectorAll('.rsvp-btn').forEach(b=>b.style.background='var(--cream)');this.parentElement.querySelector('.rsvp-btn').style.background='var(--sage)'">
+          <div class="rsvp-btn" style="text-align:center;padding:12px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.1em;background:var(--cream);color:var(--choco);transition:background 0.2s;">К сожалению, нет</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Количество -->
+    <div style="margin-bottom:20px;">
+      <label style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);font-weight:500;display:block;margin-bottom:8px;">Сколько человек придёт</label>
+      <textarea id="rsvp-guests" placeholder="Например: 2 взрослых, ребёнок 5 лет" rows="2"
+        style="width:100%;padding:14px 16px;border:1px solid var(--pbeige);background:var(--cream);font-family:'Montserrat',sans-serif;font-size:13px;color:var(--choco);outline:none;box-sizing:border-box;resize:none;"></textarea>
+      <p style="font-size:11px;color:var(--choco);line-height:1.7;margin-top:10px;opacity:0.7;">
+        Мы будем рады видеть ваших детей, однако заранее хотим предупредить: отдельного детского стола не предусмотрено, и малыши будут с вами за общим столом. Пожалуйста, учитывайте это при планировании.
+      </p>
+    </div>
+
+    <!-- Алкоголь -->
+    <div style="margin-bottom:20px;">
+      <label style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);font-weight:500;display:block;margin-bottom:12px;">Пожелания по алкоголю</label>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;" id="alcohol-group">
+        <label style="cursor:pointer;"><input type="checkbox" value="Вино" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🍷 Вино</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Шампанское" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🥂 Шампанское</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Пиво" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🍺 Пиво</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Крепкое" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🥃 Крепкое</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Не пью" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🚫 Не пью</div></label>
+      </div>
+    </div>
+
+    <!-- Кнопка -->
+    <button onclick="submitRSVP()" style="
+      width:100%;padding:16px;
+      background:var(--choco);color:var(--cream);
+      border:none;cursor:pointer;
+      font-family:'Montserrat',sans-serif;
+      font-size:11px;letter-spacing:0.3em;text-transform:uppercase;
+      margin-top:8px;
+    ">Отправить</button>
+
+    <div id="rsvp-msg" style="margin-top:20px;font-size:13px;text-align:center;color:var(--olive);display:none;"></div>
+  </div>
+</section>
+
 <!-- ══ FOOTER ══════════════════════════════════════════ -->
 <footer>
   <div class="f-names">Иван &amp; Инна</div>
@@ -746,6 +814,76 @@
         <circle cx="100" cy="10" r="3" fill="#5B6B47"/>
       </svg>
     `;
+  }
+
+  // ── RSVP имя из параметра ─────────────────────────
+  const guestNames = {
+    '1': 'Мама и папа', '2': 'Бабушка Галя', '3': 'Настя и Костя',
+    '4': 'Сонечка', '5': 'Паша и Аня', '6': 'Тётя Вероника',
+    '7': 'Дядя Сергей и тётя Марина', '8': 'Николай и Екатерина',
+    '9': 'Евгений и Светлана', '10': 'Роман и Ася', '11': 'Дядя Олег и тётя Светлана',
+  };
+
+  const rsvpGid = new URLSearchParams(window.location.search).get('g');
+  if (rsvpGid && guestNames[rsvpGid]) {
+    document.getElementById('rsvp-name').value = guestNames[rsvpGid];
+    document.getElementById('rsvp-name-block').style.display = 'none';
+  }
+
+  // ── RSVP ──────────────────────────────────────────
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAhE0ZDN45kPZuyLf9dji8Pqo37qjwBZe5oPG1HFDzhZGQg7h-5q-2D4NSgX2XKiASyg/exec';
+
+  // toggle алкоголь
+  document.querySelectorAll('.alc-cb').forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.nextElementSibling.style.background = cb.checked ? 'var(--sage)' : 'var(--cream)';
+    });
+  });
+
+  function resetRSVP() {
+    if (!rsvpGid) document.getElementById('rsvp-name').value = '';
+    document.querySelector('input[name="attending"]:checked') && (document.querySelector('input[name="attending"]:checked').checked = false);
+    document.querySelectorAll('.rsvp-btn').forEach(b => b.style.background = 'var(--cream)');
+    document.getElementById('rsvp-guests').value = '';
+    document.querySelectorAll('.alc-cb').forEach(cb => {
+      cb.checked = false;
+      cb.nextElementSibling.style.background = 'var(--cream)';
+    });
+    document.getElementById('rsvp-msg').style.display = 'none';
+  }
+
+  async function submitRSVP() {
+    const name     = document.getElementById('rsvp-name').value.trim();
+    const attending = document.querySelector('input[name="attending"]:checked')?.value;
+    const guests   = document.getElementById('rsvp-guests').value;
+    const alcohol  = [...document.querySelectorAll('.alc-cb:checked')].map(c => c.value).join(', ') || '—';
+    const msg      = document.getElementById('rsvp-msg');
+
+    if (!name || !attending) {
+      msg.style.color = 'var(--terra)';
+      msg.textContent = 'Пожалуйста, заполните имя и отметьте придёте ли вы.';
+      msg.style.display = 'block';
+      return;
+    }
+
+    const guestName = document.getElementById('invite-content')?.querySelector('p')?.textContent?.replace(',','') || '—';
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, attending, guests: guests || '1', alcohol })
+      });
+      document.getElementById('rsvp-form').style.display = 'none';
+      msg.style.color = 'var(--olive)';
+      msg.textContent = 'Спасибо! Мы получили ваш ответ 🌿';
+      msg.style.display = 'block';
+    } catch(e) {
+      msg.style.color = 'var(--terra)';
+      msg.textContent = 'Что-то пошло не так. Попробуйте ещё раз.';
+      msg.style.display = 'block';
+    }
   }
 
   // ── Countdown timer ──────────────────────────────
