@@ -633,7 +633,7 @@
 <!-- ══ RSVP ══════════════════════════════════════════ -->
 <div class="divider"><hr><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="8" rx="5" ry="8" fill="#A8B89A" opacity="0.5" transform="rotate(-18 14 8)"/><ellipse cx="14" cy="8" rx="5" ry="8" fill="#5B6B47" opacity="0.4" transform="rotate(18 14 8)"/><circle cx="14" cy="20" r="2.5" fill="#6B5444"/></svg><hr></div>
 
-<section class="reveal" style="text-align:center;">
+<section id="rsvp-section" class="reveal" style="text-align:center;">
   <span class="section-label">Подтверждение</span>
   <h2 class="section-title">Вы придёте?</h2>
   <p class="dresscode-text" style="margin:0 auto 40px;">Пожалуйста, заполните форму до 1 сентября 2026</p>
@@ -676,12 +676,14 @@
     <div style="margin-bottom:20px;">
       <label style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);font-weight:500;display:block;margin-bottom:12px;">Пожелания по алкоголю</label>
       <div style="display:flex;flex-wrap:wrap;gap:10px;" id="alcohol-group">
-        <label style="cursor:pointer;"><input type="checkbox" value="Вино" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🍷 Вино</div></label>
-        <label style="cursor:pointer;"><input type="checkbox" value="Шампанское" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🥂 Шампанское</div></label>
-        <label style="cursor:pointer;"><input type="checkbox" value="Пиво" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🍺 Пиво</div></label>
-        <label style="cursor:pointer;"><input type="checkbox" value="Крепкое" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🥃 Крепкое</div></label>
-        <label style="cursor:pointer;"><input type="checkbox" value="Не пью" style="display:none;" class="alc-cb"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🚫 Не пью</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Вино" style="display:none;" class="alc-cb alc-drink"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🍷 Вино</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Шампанское" style="display:none;" class="alc-cb alc-drink"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🥂 Шампанское</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Пиво" style="display:none;" class="alc-cb alc-drink"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🍺 Пиво</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Крепкое" style="display:none;" class="alc-cb alc-drink"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🥃 Крепкое</div></label>
+        <label style="cursor:pointer;"><input type="checkbox" value="Не пью" style="display:none;" class="alc-cb alc-none"><div class="alc-btn" style="padding:10px 16px;border:1px solid var(--pbeige);font-size:12px;letter-spacing:0.08em;background:var(--cream);color:var(--choco);">🚫 Не пью</div></label>
       </div>
+      <input id="alc-custom" type="text" placeholder="Свой вариант..."
+        style="width:100%;margin-top:10px;padding:12px 16px;border:1px solid var(--pbeige);background:var(--cream);font-family:'Montserrat',sans-serif;font-size:13px;color:var(--choco);outline:none;box-sizing:border-box;">
     </div>
 
     <!-- Кнопка -->
@@ -833,11 +835,28 @@
   // ── RSVP ──────────────────────────────────────────
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAhE0ZDN45kPZuyLf9dji8Pqo37qjwBZe5oPG1HFDzhZGQg7h-5q-2D4NSgX2XKiASyg/exec';
 
-  // toggle алкоголь
-  document.querySelectorAll('.alc-cb').forEach(cb => {
+  // toggle алкоголь с взаимным исключением
+  document.querySelectorAll('.alc-drink').forEach(cb => {
     cb.addEventListener('change', () => {
+      if (cb.checked) {
+        // снять "Не пью"
+        const noCb = document.querySelector('.alc-none');
+        noCb.checked = false;
+        noCb.nextElementSibling.style.background = 'var(--cream)';
+      }
       cb.nextElementSibling.style.background = cb.checked ? 'var(--sage)' : 'var(--cream)';
     });
+  });
+
+  document.querySelector('.alc-none').addEventListener('change', function() {
+    if (this.checked) {
+      // снять все напитки
+      document.querySelectorAll('.alc-drink').forEach(cb => {
+        cb.checked = false;
+        cb.nextElementSibling.style.background = 'var(--cream)';
+      });
+    }
+    this.nextElementSibling.style.background = this.checked ? 'var(--sage)' : 'var(--cream)';
   });
 
   function resetRSVP() {
@@ -856,7 +875,9 @@
     const name     = document.getElementById('rsvp-name').value.trim();
     const attending = document.querySelector('input[name="attending"]:checked')?.value;
     const guests   = document.getElementById('rsvp-guests').value;
-    const alcohol  = [...document.querySelectorAll('.alc-cb:checked')].map(c => c.value).join(', ') || '—';
+    const alcohol  = [...document.querySelectorAll('.alc-cb:checked')].map(c => c.value).join(', ');
+    const alcCustom = document.getElementById('alc-custom').value.trim();
+    const alcFinal = [alcohol, alcCustom].filter(Boolean).join(', ') || '—';
     const msg      = document.getElementById('rsvp-msg');
 
     if (!name || !attending) {
@@ -866,19 +887,35 @@
       return;
     }
 
-    const guestName = document.getElementById('invite-content')?.querySelector('p')?.textContent?.replace(',','') || '—';
-
     try {
       await fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, attending, guests: guests || '1', alcohol })
+        body: JSON.stringify({ name, attending, guests: guests || '1', alcohol: alcFinal })
       });
-      document.getElementById('rsvp-form').style.display = 'none';
-      msg.style.color = 'var(--olive)';
-      msg.textContent = 'Спасибо! Мы получили ваш ответ 🌿';
-      msg.style.display = 'block';
+
+      const section = document.getElementById('rsvp-section');
+      const isAttending = attending === 'Да, приду';
+
+      section.innerHTML = `
+        <div style="text-align:center;padding:60px 24px;">
+          <svg viewBox="0 0 200 20" style="display:block;margin:0 auto 32px;" width="160">
+            <line x1="0" y1="10" x2="200" y2="10" stroke="#DDC9B4" stroke-width="1"/>
+            <ellipse cx="92" cy="7" rx="7" ry="2.6" fill="#A8B89A" transform="rotate(-28 92 7)"/>
+            <ellipse cx="108" cy="7" rx="7" ry="2.6" fill="#A8B89A" transform="rotate(28 108 7)"/>
+            <circle cx="100" cy="10" r="3" fill="#5B6B47"/>
+          </svg>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:clamp(24px,4vw,36px);font-style:italic;color:var(--choco);margin:0 0 16px;">
+            ${isAttending ? 'Будем ждать вас 18 сентября 🌿' : 'Жаль, что вы не сможете быть с нами'}
+          </p>
+          <p style="font-family:'Montserrat',sans-serif;font-size:13px;color:var(--taupe);line-height:1.9;max-width:400px;margin:0 auto;">
+            ${isAttending
+              ? 'Спасибо, что подтвердили! Мы очень рады и с нетерпением вас ждём.'
+              : 'Очень жаль, что не получится. Обязательно увидимся в следующий раз!'}
+          </p>
+        </div>
+      `;
     } catch(e) {
       msg.style.color = 'var(--terra)';
       msg.textContent = 'Что-то пошло не так. Попробуйте ещё раз.';
